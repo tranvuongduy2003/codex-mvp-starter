@@ -35,7 +35,10 @@ public sealed class IntegrationTestWebApplicationFactory : WebApplicationFactory
             configurationBuilder.AddInMemoryCollection(
             [
                 new KeyValuePair<string, string?>("ConnectionStrings:App", _postgresConnectionString),
-                new KeyValuePair<string, string?>("ConnectionStrings:Cache", _redisConnectionString)
+                new KeyValuePair<string, string?>("ConnectionStrings:Cache", _redisConnectionString),
+                new KeyValuePair<string, string?>(
+                    "ConnectionStrings:storage",
+                    "Endpoint=http://localhost:9000;AccessKey=test;SecretKey=test")
             ]);
         });
         builder.ConfigureServices(services =>

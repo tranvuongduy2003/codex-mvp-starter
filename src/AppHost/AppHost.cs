@@ -19,9 +19,6 @@ var redis = builder.AddRedis("cache")
 var storage = builder.AddMinioContainer("storage")
     .WithDataVolume("solution-storage-data");
 
-var seq = builder.AddSeq("seq")
-    .WithEnvironment("ACCEPT_EULA", "Y");
-
 var seeder = builder.AddProject<Projects.Solution_DataSeeder>("seeder")
     .WithReference(applicationDatabase)
     .WaitFor(postgres);
@@ -31,11 +28,9 @@ var api = builder.AddProject<Projects.Solution_Api>("api", launchProfileName: "h
     .WithReference(applicationDatabase)
     .WithReference(redis, connectionName: "Cache")
     .WithReference(storage)
-    .WithReference(seq)
     .WaitFor(postgres)
     .WaitFor(redis)
     .WaitFor(storage)
-    .WaitFor(seq)
     .WaitForCompletion(seeder)
     .WithHttpsDeveloperCertificate()
     .WithExternalHttpEndpoints()

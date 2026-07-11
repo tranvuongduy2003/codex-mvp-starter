@@ -40,7 +40,7 @@ Treat these as high risk whenever affected:
 - Do not add hand-authored Docker Compose.
 - PostgreSQL is authoritative.
 - Redis is rebuildable cache/session infrastructure.
-- Optional MinIO-compatible storage stores avatar objects by key.
+- MinIO-compatible storage stores avatar objects by key.
 - Configure shared telemetry, service discovery, resilience, and health through `ServiceDefaults`.
 
 ## Verification

@@ -1,4 +1,4 @@
-﻿# Postgres MCP â€” query reference
+﻿# Postgres MCP — query reference
 
 Starter **read-only** queries for Solution. Adjust limits and filters as needed.
 

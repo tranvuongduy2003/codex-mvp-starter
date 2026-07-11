@@ -27,7 +27,7 @@ starter becomes a real product.
 ## Product Intent
 
 Solution is an application starter focused on users, authentication, authorization, a React web
-shell, a .NET API, PostgreSQL persistence, Redis-backed sessions, optional object storage for user
+shell, a .NET API, PostgreSQL persistence, Redis-backed sessions, object storage for user
 avatars, and Aspire local orchestration.
 
 ## Personas

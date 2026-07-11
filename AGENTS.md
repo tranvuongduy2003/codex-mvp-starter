@@ -11,7 +11,7 @@ Backend topology:
 - `ServiceDefaults` shared by local services
 - PostgreSQL as authoritative persistence
 - Redis as rebuildable session/cache infrastructure
-- Optional MinIO-compatible object storage for user avatars
+- MinIO-compatible object storage for user avatars
 
 Frontend topology:
 

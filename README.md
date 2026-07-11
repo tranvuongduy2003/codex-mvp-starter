@@ -27,7 +27,7 @@ code.
 
 - Modular monolith with Clean Architecture boundaries.
 - PostgreSQL is authoritative; Redis is rebuildable cache/session infrastructure.
-- Optional MinIO-compatible object storage supports user avatars.
+- MinIO-compatible object storage supports user avatars.
 - React 19 + Vite frontend consumes generated OpenAPI types.
 - .NET Aspire AppHost is the local topology source of truth. Do not add hand-authored Docker Compose.
 
@@ -64,8 +64,7 @@ environment files.
 dotnet run --project src/AppHost/Solution.AppHost.csproj
 ```
 
-Aspire exposes the API, web app, PostgreSQL, Redis, MinIO, Seq, and seeder resources through the
-dashboard.
+Aspire exposes the API, web app, PostgreSQL, Redis, MinIO, and seeder resources through the dashboard.
 
 ## Seed Accounts
 

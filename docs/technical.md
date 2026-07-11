@@ -36,8 +36,10 @@ Aspire is the local topology source of truth. The starter includes:
 
 - PostgreSQL as authoritative persistence.
 - Redis as rebuildable session/cache infrastructure.
-- Optional MinIO-compatible object storage for user avatars.
-- Seq/OpenTelemetry through ServiceDefaults.
+- MinIO-compatible object storage for user avatars.
+- OpenTelemetry through ServiceDefaults.
+- In-memory integration events use `Channel<QueuedIntegrationEvent>` with typed consumers resolved
+  through dependency injection.
 - React, TypeScript, Vite, and Yarn for the web app.
 
 ## Domain Model

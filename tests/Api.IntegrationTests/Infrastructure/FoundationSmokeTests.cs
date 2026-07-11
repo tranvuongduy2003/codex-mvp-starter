@@ -1,6 +1,8 @@
+using System.Threading.Channels;
 using System.Net;
 using Solution.Api.IntegrationTests.Integration;
 using Solution.Application.Abstractions.Auth;
+using Solution.Application.Abstractions.IntegrationEvents;
 using Solution.Application.Abstractions.Persistence;
 using Solution.Application.Abstractions.Storage;
 using Solution.Testing.Common.Fixtures;
@@ -33,5 +35,7 @@ public sealed class FoundationSmokeTests(IntegrationTestFixture fixture)
         services.GetService<IUserRepository>().Should().NotBeNull();
         services.GetService<ISessionStore>().Should().NotBeNull();
         services.GetService<IObjectStorage>().Should().NotBeNull();
+        services.GetService<Channel<QueuedIntegrationEvent>>().Should().NotBeNull();
+        services.GetService<IIntegrationEventPublisher>().Should().NotBeNull();
     }
 }

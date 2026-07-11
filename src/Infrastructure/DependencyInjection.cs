@@ -1,9 +1,12 @@
+using System.Threading.Channels;
 using Solution.Application.Abstractions.Auth;
 using Solution.Application.Abstractions.Cache;
+using Solution.Application.Abstractions.IntegrationEvents;
 using Solution.Application.Abstractions.Persistence;
 using Solution.Application.Abstractions.Storage;
 using Solution.Infrastructure.Auth;
 using Solution.Infrastructure.Cache;
+using Solution.Infrastructure.IntegrationEvents;
 using Solution.Infrastructure.Persistence;
 using Solution.Infrastructure.Persistence.Repositories;
 using Solution.Infrastructure.Storage;
@@ -18,14 +21,11 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
-        IConfiguration configuration,
-        Action<InfrastructureRegistrationOptions>? configure = null)
+        IConfiguration configuration)
     {
-        var options = new InfrastructureRegistrationOptions();
-        configure?.Invoke(options);
-
         var postgresConnectionString = configuration.GetConnectionString("App");
         var redisConnectionString = configuration.GetConnectionString("Cache");
+        var storageConnectionString = configuration.GetConnectionString("storage");
 
         void ConfigureApplicationDatabaseContext(DbContextOptionsBuilder contextOptions)
         {
@@ -46,22 +46,21 @@ public static class DependencyInjection
             ConfigureApplicationDatabaseContext,
             ServiceLifetime.Scoped);
 
-        if (options.RequireSessionCache)
+        if (string.IsNullOrWhiteSpace(redisConnectionString))
         {
-            if (string.IsNullOrWhiteSpace(redisConnectionString))
-            {
-                throw new InvalidOperationException(
-                    "Connection string 'Cache' is required. Configure Redis for session cache.");
-            }
+            throw new InvalidOperationException(
+                "Connection string 'Cache' is required. Configure Redis for session cache.");
+        }
 
-            services.AddSingleton<IConnectionMultiplexer>(_ =>
-                ConnectionMultiplexer.Connect(redisConnectionString));
-            services.AddSingleton<ICacheService, CacheService>();
-        }
-        else
+        if (string.IsNullOrWhiteSpace(storageConnectionString))
         {
-            services.AddSingleton<ICacheService, NoOpCacheService>();
+            throw new InvalidOperationException(
+                "Connection string 'storage' is required. Configure object storage for user avatars.");
         }
+
+        services.AddSingleton<IConnectionMultiplexer>(_ =>
+            ConnectionMultiplexer.Connect(redisConnectionString));
+        services.AddSingleton<ICacheService, CacheService>();
 
         services.AddScoped<IApplicationDatabaseContext>(serviceProvider =>
             serviceProvider.GetRequiredService<ApplicationDatabaseContext>());
@@ -71,16 +70,15 @@ public static class DependencyInjection
         services.AddScoped<ISessionStore, SessionStore>();
         services.AddScoped<IPasswordHasher, IdentityPasswordHasher>();
 
-        services.AddSingleton<IObjectStorage>(serviceProvider =>
-        {
-            var storageConnectionString = configuration.GetConnectionString("storage");
-            if (!string.IsNullOrWhiteSpace(storageConnectionString))
+        services.AddSingleton<IObjectStorage>(_ => new MinioObjectStorage(storageConnectionString));
+        services.AddSingleton(_ => Channel.CreateUnbounded<QueuedIntegrationEvent>(
+            new UnboundedChannelOptions
             {
-                return new MinioObjectStorage(storageConnectionString);
-            }
-
-            return new NoOpObjectStorage();
-        });
+                SingleReader = true,
+                SingleWriter = false
+        }));
+        services.AddSingleton<IIntegrationEventPublisher, ChannelIntegrationEventPublisher>();
+        services.AddHostedService<ChannelIntegrationEventConsumerService>();
         return services;
     }
 }
