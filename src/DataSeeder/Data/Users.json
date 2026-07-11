@@ -1,0 +1,14 @@
+[
+  {
+    "id": "d4ce6f45-e660-487b-84f8-c5b316f3ccde",
+    "displayName": "Admin User",
+    "email": "admin@solution.dev",
+    "role": "Admin"
+  },
+  {
+    "id": "67f7f0f7-5148-4d16-8977-066756b82c3a",
+    "displayName": "Demo User",
+    "email": "user@solution.dev",
+    "role": "User"
+  }
+]
