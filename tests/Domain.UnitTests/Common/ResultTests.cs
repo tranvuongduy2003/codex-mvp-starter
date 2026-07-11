@@ -1,4 +1,4 @@
-﻿using Solution.Application.Common;
+using Solution.Application.Common;
 using Solution.Testing.Common.Assertions;
 using FluentAssertions;
 

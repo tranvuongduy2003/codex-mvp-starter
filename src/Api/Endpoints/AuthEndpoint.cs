@@ -1,4 +1,4 @@
-﻿using Solution.Api.Auth;
+using Solution.Api.Auth;
 using Solution.Api.Http;
 using Solution.Api.Mapping;
 using Solution.Application.Abstractions.Auth;

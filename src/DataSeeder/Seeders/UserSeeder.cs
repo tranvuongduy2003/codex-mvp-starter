@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Solution.DataSeeder.Models;
 using Solution.Domain.Users;
 using Solution.Infrastructure.Persistence;

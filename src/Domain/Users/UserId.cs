@@ -1,4 +1,4 @@
-﻿using Solution.Domain.Exceptions;
+using Solution.Domain.Exceptions;
 
 namespace Solution.Domain.Users;
 

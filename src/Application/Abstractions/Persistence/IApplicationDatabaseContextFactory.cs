@@ -1,4 +1,4 @@
-﻿namespace Solution.Application.Abstractions.Persistence;
+namespace Solution.Application.Abstractions.Persistence;
 
 public interface IApplicationDatabaseContextFactory
 {

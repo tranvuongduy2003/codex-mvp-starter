@@ -1,4 +1,4 @@
-﻿namespace Solution.Domain.Abstractions;
+namespace Solution.Domain.Abstractions;
 
 public abstract class AggregateRoot<TId> : Entity<TId>, IAggregateRoot<TId>
     where TId : notnull

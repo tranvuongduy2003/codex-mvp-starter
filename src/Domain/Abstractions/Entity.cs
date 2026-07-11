@@ -1,4 +1,4 @@
-﻿namespace Solution.Domain.Abstractions;
+namespace Solution.Domain.Abstractions;
 
 public abstract class Entity<TId> : IEquatable<Entity<TId>>, IEntity<TId>
     where TId : notnull

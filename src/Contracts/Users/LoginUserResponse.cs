@@ -1,3 +1,3 @@
-﻿namespace Solution.Contracts.Users;
+namespace Solution.Contracts.Users;
 
 public sealed record LoginUserResponse(Guid UserId, string DisplayName, string Email, string Role, string? AvatarUrl = null);

@@ -1,4 +1,4 @@
-﻿using Solution.Api.Common;
+using Solution.Api.Common;
 using Solution.Application.Common;
 using HttpResult = Microsoft.AspNetCore.Http.IResult;
 

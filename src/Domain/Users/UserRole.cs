@@ -1,4 +1,4 @@
-﻿namespace Solution.Domain.Users;
+namespace Solution.Domain.Users;
 
 public enum UserRole
 {

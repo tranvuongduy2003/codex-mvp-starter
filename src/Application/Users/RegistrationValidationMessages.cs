@@ -1,4 +1,4 @@
-﻿namespace Solution.Application.Users;
+namespace Solution.Application.Users;
 
 internal static class RegistrationValidationMessages
 {

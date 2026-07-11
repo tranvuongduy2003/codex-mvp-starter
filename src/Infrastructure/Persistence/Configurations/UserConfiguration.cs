@@ -1,4 +1,4 @@
-﻿using Solution.Domain.Users;
+using Solution.Domain.Users;
 using Solution.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

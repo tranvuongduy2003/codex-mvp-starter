@@ -1,4 +1,4 @@
-﻿namespace Solution.Infrastructure;
+namespace Solution.Infrastructure;
 
 public sealed class InfrastructureRegistrationOptions
 {

@@ -1,4 +1,4 @@
-﻿namespace Solution.Application.Exceptions;
+namespace Solution.Application.Exceptions;
 
 public class ApplicationException : Exception
 {

@@ -1,4 +1,4 @@
-﻿using Solution.Application.Options;
+using Solution.Application.Options;
 using Microsoft.Extensions.Options;
 
 namespace Solution.Api.Auth;

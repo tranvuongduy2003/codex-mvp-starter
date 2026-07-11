@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Services;
+using Solution.Application.Abstractions.Services;
 using Solution.Domain.Abstractions;
 
 namespace Solution.Application.Services;

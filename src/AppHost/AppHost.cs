@@ -1,4 +1,4 @@
-﻿var builder = DistributedApplication.CreateBuilder(args);
+var builder = DistributedApplication.CreateBuilder(args);
 var webScheme = Environment.GetEnvironmentVariable("APPHOST_WEB_SCHEME") ?? "https";
 var isWebHttps = string.Equals(webScheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase);
 

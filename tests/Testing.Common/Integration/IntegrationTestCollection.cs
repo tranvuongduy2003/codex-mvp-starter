@@ -1,4 +1,4 @@
-﻿namespace Solution.Testing.Common.Integration;
+namespace Solution.Testing.Common.Integration;
 
 public static class IntegrationTestCollection
 {

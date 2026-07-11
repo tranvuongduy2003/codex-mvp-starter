@@ -1,4 +1,4 @@
-﻿namespace Solution.Infrastructure.Exceptions;
+namespace Solution.Infrastructure.Exceptions;
 
 public class InfrastructureException : Exception
 {

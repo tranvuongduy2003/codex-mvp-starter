@@ -1,4 +1,4 @@
-﻿using Solution.Api.Http;
+using Solution.Api.Http;
 using Solution.Api.Mapping;
 using Solution.Application.Users.Commands;
 using Solution.Contracts.Users;

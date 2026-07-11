@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Solution.Api.Common;
 using Solution.Application.Exceptions;
 using Solution.Domain.Exceptions;

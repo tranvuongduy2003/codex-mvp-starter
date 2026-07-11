@@ -1,4 +1,4 @@
-﻿namespace Solution.Application.Abstractions.Services;
+namespace Solution.Application.Abstractions.Services;
 
 public interface IClock
 {

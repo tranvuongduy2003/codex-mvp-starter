@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Storage;
+using Solution.Application.Abstractions.Storage;
 using Solution.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

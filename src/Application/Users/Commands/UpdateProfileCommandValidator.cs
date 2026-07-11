@@ -1,4 +1,4 @@
-﻿using System.Net.Mail;
+using System.Net.Mail;
 using FluentValidation;
 
 namespace Solution.Application.Users.Commands;

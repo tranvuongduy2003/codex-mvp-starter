@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using Solution.Application.Abstractions.Auth;
 using Solution.Domain.Users;
 

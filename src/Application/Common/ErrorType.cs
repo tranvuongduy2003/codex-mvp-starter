@@ -1,4 +1,4 @@
-﻿namespace Solution.Application.Common;
+namespace Solution.Application.Common;
 
 public enum ErrorType
 {

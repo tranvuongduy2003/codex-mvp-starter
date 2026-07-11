@@ -1,4 +1,4 @@
-﻿namespace Solution.Contracts.Users;
+namespace Solution.Contracts.Users;
 
 public sealed record UpdateProfileResponse(
     Guid UserId,

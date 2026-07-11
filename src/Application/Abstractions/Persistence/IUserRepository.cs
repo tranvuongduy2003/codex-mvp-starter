@@ -1,4 +1,4 @@
-﻿using Solution.Domain.Users;
+using Solution.Domain.Users;
 
 namespace Solution.Application.Abstractions.Persistence;
 

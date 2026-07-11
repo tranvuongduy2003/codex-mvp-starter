@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Auth;
+using Solution.Application.Abstractions.Auth;
 using Solution.Application.Common;
 using MediatR;
 using Microsoft.Extensions.Logging;

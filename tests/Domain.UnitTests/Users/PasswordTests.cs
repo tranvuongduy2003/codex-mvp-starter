@@ -1,4 +1,4 @@
-﻿using Solution.Domain.Exceptions;
+using Solution.Domain.Exceptions;
 using Solution.Domain.Users;
 using FluentAssertions;
 

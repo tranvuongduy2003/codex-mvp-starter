@@ -1,4 +1,4 @@
-﻿namespace Solution.Api.Endpoints;
+namespace Solution.Api.Endpoints;
 
 internal sealed class ApiHealthEndpoint : IEndpoint
 {

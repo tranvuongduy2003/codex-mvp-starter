@@ -1,4 +1,4 @@
-﻿namespace Solution.Application.Options;
+namespace Solution.Application.Options;
 
 public sealed class LoggingOptions
 {

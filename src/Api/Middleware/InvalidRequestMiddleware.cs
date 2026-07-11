@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Solution.Api.Http.Problems;
 using Microsoft.AspNetCore.Http;
 

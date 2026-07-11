@@ -1,4 +1,4 @@
-﻿using Solution.Infrastructure.Persistence;
+using Solution.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;

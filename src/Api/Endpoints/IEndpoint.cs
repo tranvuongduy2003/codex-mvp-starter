@@ -1,4 +1,4 @@
-﻿namespace Solution.Api.Endpoints;
+namespace Solution.Api.Endpoints;
 
 public interface IEndpoint
 {

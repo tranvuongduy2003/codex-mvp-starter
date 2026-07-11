@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Persistence;
+using Solution.Application.Abstractions.Persistence;
 using Solution.Domain.Users;
 using Solution.Infrastructure.Persistence.Mapping;
 using Microsoft.EntityFrameworkCore;

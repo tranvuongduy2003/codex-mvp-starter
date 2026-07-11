@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Storage;
+using Solution.Application.Abstractions.Storage;
 
 namespace Solution.Testing.Common.Fixtures;
 

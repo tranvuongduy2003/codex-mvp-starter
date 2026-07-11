@@ -1,4 +1,4 @@
-﻿using Solution.Application.Common;
+using Solution.Application.Common;
 
 namespace Solution.Application.Abstractions.Messaging;
 

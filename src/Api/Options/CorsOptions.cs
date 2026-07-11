@@ -1,4 +1,4 @@
-﻿namespace Solution.Api.Options;
+namespace Solution.Api.Options;
 
 public sealed class CorsOptions
 {

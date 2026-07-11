@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Cache;
+using Solution.Application.Abstractions.Cache;
 
 namespace Solution.Api.IntegrationTests.Users.Fakes;
 

@@ -1,4 +1,4 @@
-﻿using Solution.Testing.Common.Fixtures;
+using Solution.Testing.Common.Fixtures;
 using Xunit;
 
 namespace Solution.Api.IntegrationTests.Integration;

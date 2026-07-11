@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using Solution.Api.Auth;
 using Solution.Api.Middleware;
 using Solution.Api.Options;

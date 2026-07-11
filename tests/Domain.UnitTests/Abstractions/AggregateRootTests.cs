@@ -1,4 +1,4 @@
-﻿using Solution.Domain.Abstractions;
+using Solution.Domain.Abstractions;
 using FluentAssertions;
 
 namespace Solution.Domain.UnitTests.Abstractions;

@@ -1,4 +1,4 @@
-﻿namespace Solution.Infrastructure.Auth;
+namespace Solution.Infrastructure.Auth;
 
 internal sealed class ApplicationIdentityUser
 {

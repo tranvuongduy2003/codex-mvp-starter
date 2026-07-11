@@ -1,4 +1,4 @@
-﻿using Solution.Application.Users.Commands;
+using Solution.Application.Users.Commands;
 using FluentAssertions;
 using FluentValidation.Results;
 

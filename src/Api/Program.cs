@@ -1,4 +1,4 @@
-﻿using Solution.Api;
+using Solution.Api;
 using Solution.Api.Endpoints;
 using Solution.Application;
 using Solution.Infrastructure;

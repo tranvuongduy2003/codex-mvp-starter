@@ -1,4 +1,4 @@
-﻿namespace Solution.Application.Abstractions.Storage;
+namespace Solution.Application.Abstractions.Storage;
 
 public interface IObjectStorage
 {

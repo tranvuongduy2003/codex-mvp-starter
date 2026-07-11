@@ -1,4 +1,4 @@
-﻿using System.Net.Mail;
+using System.Net.Mail;
 using Solution.Domain.Abstractions;
 using Solution.Domain.Exceptions;
 

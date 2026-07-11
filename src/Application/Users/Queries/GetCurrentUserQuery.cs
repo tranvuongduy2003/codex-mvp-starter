@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Messaging;
+using Solution.Application.Abstractions.Messaging;
 
 namespace Solution.Application.Users.Queries;
 

@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Persistence;
+using Solution.Application.Abstractions.Persistence;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Solution.Infrastructure.Persistence;

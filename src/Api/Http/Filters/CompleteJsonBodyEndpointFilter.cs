@@ -1,4 +1,4 @@
-﻿using Solution.Api.Http.Binding;
+using Solution.Api.Http.Binding;
 using Solution.Api.Http.Problems;
 
 namespace Solution.Api.Http.Filters;

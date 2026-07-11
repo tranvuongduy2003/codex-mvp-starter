@@ -1,3 +1,3 @@
-﻿namespace Solution.Contracts.Users;
+namespace Solution.Contracts.Users;
 
 public sealed record UpdateProfileRequest(string? DisplayName, string? Email);

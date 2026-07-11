@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Auth;
+using Solution.Application.Abstractions.Auth;
 using Solution.Application.Abstractions.Cache;
 using Solution.Application.Abstractions.Persistence;
 using Solution.Application.Abstractions.Storage;

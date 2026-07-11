@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Persistence;
+using Solution.Application.Abstractions.Persistence;
 using Solution.Application.Common;
 using Solution.Application.Users.Commands;
 using Microsoft.EntityFrameworkCore;

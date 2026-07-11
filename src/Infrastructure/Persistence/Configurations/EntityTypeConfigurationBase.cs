@@ -1,4 +1,4 @@
-﻿using Solution.Domain.Abstractions;
+using Solution.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

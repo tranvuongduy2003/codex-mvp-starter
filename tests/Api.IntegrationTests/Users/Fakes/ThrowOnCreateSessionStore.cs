@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Auth;
+using Solution.Application.Abstractions.Auth;
 using Solution.Domain.Users;
 
 namespace Solution.Api.IntegrationTests.Users.Fakes;

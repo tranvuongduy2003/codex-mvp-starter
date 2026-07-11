@@ -1,4 +1,4 @@
-﻿namespace Solution.Infrastructure.Persistence.Entities;
+namespace Solution.Infrastructure.Persistence.Entities;
 
 public sealed class UserSessionRecord
 {

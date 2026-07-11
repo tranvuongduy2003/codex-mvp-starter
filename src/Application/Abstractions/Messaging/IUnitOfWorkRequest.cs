@@ -1,3 +1,3 @@
-﻿namespace Solution.Application.Abstractions.Messaging;
+namespace Solution.Application.Abstractions.Messaging;
 
 public interface IUnitOfWorkRequest;

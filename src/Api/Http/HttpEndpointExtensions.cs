@@ -1,4 +1,4 @@
-﻿using Solution.Api.Http.Filters;
+using Solution.Api.Http.Filters;
 
 namespace Solution.Api.Http;
 

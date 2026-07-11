@@ -1,3 +1,3 @@
-﻿namespace Solution.DataSeeder.Models;
+namespace Solution.DataSeeder.Models;
 
 public sealed record UserSeed(Guid Id, string DisplayName, string Email, string Role);

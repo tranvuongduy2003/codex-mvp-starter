@@ -1,4 +1,4 @@
-﻿using Solution.Application.Abstractions.Messaging;
+using Solution.Application.Abstractions.Messaging;
 using Solution.Domain.Users;
 using Microsoft.Extensions.Logging;
 

@@ -1,4 +1,4 @@
-﻿namespace Solution.Application.Configuration;
+namespace Solution.Application.Configuration;
 
 public static class ApplicationSectionNames
 {

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Reflection;
 using Solution.Application.Abstractions.Messaging;
 using Solution.Application.Abstractions.Services;

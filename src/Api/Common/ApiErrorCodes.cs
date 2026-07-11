@@ -1,4 +1,4 @@
-﻿namespace Solution.Api.Common;
+namespace Solution.Api.Common;
 
 internal static class ApiErrorCodes
 {
