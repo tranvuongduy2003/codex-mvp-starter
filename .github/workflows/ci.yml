@@ -10,9 +10,9 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-      APPHOST_WEB_SCHEME: ${{ vars.APPHOST_WEB_SCHEME }}
-      Cors__AllowedOrigins__0: ${{ vars.E2E_BASE_URL }}
-      E2E_BASE_URL: ${{ vars.E2E_BASE_URL }}
+      APPHOST_WEB_SCHEME: http
+      Cors__AllowedOrigins__0: http://localhost:5000
+      E2E_BASE_URL: http://localhost:5000
 
     steps:
       - name: Checkout
