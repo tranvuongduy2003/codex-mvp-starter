@@ -36,10 +36,23 @@ initializing. Inside `$cook`, these gates are run before this skill.
 
 1. **Read the spec and approved plan.** Decompose it into a flat, ordered list of small,
    independently shippable slices - each one buildable and verifiable on its own.
+   Before writing JSON, perform an **area preservation audit**:
+   - Read the plan's `Area Coverage Matrix` when present, and otherwise infer required areas from
+     the spec and plan (`backend`, `contracts`, `web`, `e2e`, docs/observability).
+   - Every area marked or inferred as required must appear in at least one feature slice with matching
+     `filesTouched`, `validationCommands`, and area skill requirements.
+   - Do not collapse a planned frontend or e2e slice into a generic final verification slice. Final
+     verification may depend on completed area slices, but it does not replace implementation or
+     browser journey work.
+   - If an area from the spec/plan is intentionally not represented in `features.json`, record the
+     source-backed reason in `areaCoverage.excludedAreas` and in the progress log. Missing approval,
+     unavailable runtime, or flake risk is not a reason to delete the slice; keep it pending and mark
+     the blocker in `notes`.
 2. **Write `.codex/tmp/features.json`.** Use JSON (models overwrite structured JSON less often than
    Markdown prose). Each feature is a **contract**, not just a title - it declares the action space
    the loop must stay inside and the objective evidence that proves it done (PEV plan-as-contract).
    One object per feature:
+
    ```json
    {
      "specPath": "docs/specs/<spec>.md",
@@ -47,14 +60,46 @@ initializing. Inside `$cook`, these gates are run before this skill.
      "title": "<spec title>",
      "createdReference": "<spec path + implementation plan reference>",
      "rollbackPoint": "<git sha at loop start - `git rev-parse HEAD`>",
+     "areaCoverage": {
+       "backend": {
+         "required": true,
+         "featureIds": [1],
+         "reason": "<source-backed reason or N/A>"
+       },
+       "contracts": {
+         "required": false,
+         "featureIds": [],
+         "reason": "N/A"
+       },
+       "web": {
+         "required": true,
+         "featureIds": [4],
+         "reason": "<frontend expectation from spec/plan>"
+       },
+       "e2e": {
+         "required": true,
+         "featureIds": [5],
+         "reason": "<browser evidence expectation from spec/plan>"
+       },
+       "excludedAreas": []
+     },
      "features": [
        {
          "id": 1,
          "title": "<short imperative slice title>",
-         "acceptanceCriteria": ["<criterion the acceptance-verifier will check>"],
+         "acceptanceCriteria": [
+           "<criterion the acceptance-verifier will check>"
+         ],
          "filesTouched": ["src/Api/Endpoints/<...>", "web/src/<...>"],
-         "invariants": ["decimal for money", "no sensitive user data in logs", "DateTimeOffset via TimeProvider"],
-         "validationCommands": ["dotnet test --filter <...>", "yarn --cwd web quality"],
+         "invariants": [
+           "decimal for money",
+           "no sensitive user data in logs",
+           "DateTimeOffset via TimeProvider"
+         ],
+         "validationCommands": [
+           "dotnet test --filter <...>",
+           "yarn --cwd web quality"
+         ],
          "riskTier": "read-only | sandbox-edit | full-access",
          "convergenceCriteria": "all validationCommands green + acceptance-verifier PASS + coverage 100%",
          "status": "pending",
@@ -63,23 +108,29 @@ initializing. Inside `$cook`, these gates are run before this skill.
      ]
    }
    ```
+
    Field meaning:
-   - **filesTouched** - the *allowed* edit space for this feature. Work outside it is scope drift; if
+   - **areaCoverage** - a top-level coverage ledger copied from the plan. It prevents context rot:
+     if the plan or spec requires `web` or `e2e`, the feature list must preserve those areas as real
+     pending slices until they are implemented or explicitly blocked with a source-backed reason.
+   - **filesTouched** - the _allowed_ edit space for this feature. Work outside it is scope drift; if
      you must touch a file not listed, update the contract first, don't silently widen it.
    - **invariants** - properties that must still hold after the change (money is `decimal`, no user
      data in logs/errors per sensitive data policy, `DateTimeOffset`/`TimeProvider` for time, etc.). Draw from the
      path-scoped rules for the area being touched.
-   - **validationCommands** - the deterministic sensors that prove *this* feature. `loop-next` runs
+   - **validationCommands** - the deterministic sensors that prove _this_ feature. `loop-next` runs
      these to verify instead of guessing "done". Prefer the narrowest command that still proves it.
    - **rollbackPoint** - top-level: the git sha at loop start, so a feature can be reset cleanly.
    - **riskTier** - which permission tier the feature needs (see `docs/harness/permission-tiers.md`).
      Anything `full-access` (network, credential, deploy, destructive delete, migration) requires HITL.
-   - **convergenceCriteria** - the explicit, objective stop condition. Never *implicit*
+   - **convergenceCriteria** - the explicit, objective stop condition. Never _implicit_
      ("feels done").
 
    `status` is one of `pending`, `in-progress`, `done`. Every feature starts `pending`. Set
    `rollbackPoint` once, at init, from `git rev-parse HEAD`.
+
 3. **Write `.codex/tmp/codex-progress.md`** - a human-readable status mirror:
+
    ```markdown
    # Progress - <spec title>
 
@@ -87,10 +138,12 @@ initializing. Inside `$cook`, these gates are run before this skill.
    - [ ] 2. <feature title>
 
    ## Log
+
    - <timestamp/context note> - initialized feature list (<n> features)
    ```
+
 4. **Do not commit these artifacts.** `.codex/tmp/**` is gitignored scratch, so `git add` refuses
-   it - there is no initialization commit. Durability comes from the file *on disk*: it survives
+   it - there is no initialization commit. Durability comes from the file _on disk_: it survives
    conversation/context resets in this working tree, and a later `loop-next` re-reads it. Keeping it
    out of git also keeps loop bookkeeping out of the feature commits and the PR.
 
@@ -104,10 +157,7 @@ Confirm the feature count and the two artifact paths. Then hand off to `$loop-ne
 - `.codex/tmp/**` is Edit-allowlisted (write without prompts) and gitignored (never committed, never
   reaches a PR). It is the loop's external scratch memory, not repository content.
 - Keep slices small: if a slice cannot be built and left green in one focused session, split it.
+- Preserve planned frontend and e2e work as first-class slices. A final verification slice can run
+  `yarn --cwd web build` or `yarn --cwd e2e test`, but it cannot stand in for creating or fixing the
+  frontend or Playwright work named by the spec.
 - Do not begin implementing here - this skill only sets up the artifacts.
-
-
-
-
-
-
