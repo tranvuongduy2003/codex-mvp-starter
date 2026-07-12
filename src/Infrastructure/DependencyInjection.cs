@@ -76,7 +76,7 @@ public static class DependencyInjection
             {
                 SingleReader = true,
                 SingleWriter = false
-        }));
+            }));
         services.AddSingleton<IIntegrationEventPublisher, ChannelIntegrationEventPublisher>();
         services.AddHostedService<ChannelIntegrationEventConsumerService>();
         return services;
