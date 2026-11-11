@@ -1,56 +1,43 @@
-import { LogOutIcon, ShieldCheckIcon } from 'lucide-react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { ShieldCheckIcon } from 'lucide-react'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 
+import { UserMenu } from '@/app/components/user-menu'
 import { paths } from '@/app/paths'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { Spinner } from '@/components/ui/spinner'
-import { useLogout } from '@/features/auth/use-logout'
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
-import { useAuthStore } from '@/store/auth-store'
 
 const navItems = [{ path: paths.home, label: 'Dashboard', end: true }] as const
 
-function UserMenu() {
-  const status = useAuthStore((state) => state.status)
-  const displayName = useAuthStore((state) => state.displayName)
-  const email = useAuthStore((state) => state.email)
-  const { logout, isPending } = useLogout()
-
-  if (status !== 'authenticated') {
-    return null
-  }
-
-  const menuLabel = displayName ?? 'Account'
-  const initials =
-    menuLabel
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase() ?? '')
-      .join('') || '?'
+function MainNavigation() {
+  const { pathname } = useLocation()
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="hidden text-right sm:block">
-        <p className="text-sm leading-none font-medium">{menuLabel}</p>
-        {email ? <p className="text-muted-foreground mt-1 text-xs">{email}</p> : null}
-      </div>
-      <Avatar size="sm">
-        <AvatarFallback className="bg-primary/10 text-primary">{initials}</AvatarFallback>
-      </Avatar>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        disabled={isPending}
-        onClick={() => logout()}
-        aria-label="Log out"
-      >
-        {isPending ? <Spinner className="size-4" /> : <LogOutIcon className="size-4" />}
-        <span className="hidden sm:inline">Log out</span>
-      </Button>
-    </div>
+    <NavigationMenu aria-label="Main navigation" className="hidden md:flex">
+      <NavigationMenuList className="justify-start gap-1">
+        {navItems.map((item) => {
+          const isActive = item.end ? pathname === item.path : pathname.startsWith(item.path)
+
+          return (
+            <NavigationMenuItem key={item.path}>
+              <NavigationMenuLink
+                render={<NavLink to={item.path} end={item.end} />}
+                className={cn(
+                  'text-muted-foreground px-3 py-2 font-medium',
+                  isActive && 'bg-primary/10 text-primary hover:bg-primary/10',
+                )}
+              >
+                {item.label}
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          )
+        })}
+      </NavigationMenuList>
+    </NavigationMenu>
   )
 }
 
@@ -63,7 +50,7 @@ export function AppLayout() {
       >
         <div className="store-container flex h-16 items-center justify-between gap-6">
           <div className="flex min-w-0 items-center gap-8">
-            <NavLink
+            <Link
               to={paths.home}
               className="text-primary flex shrink-0 items-center gap-2 font-semibold tracking-tight"
             >
@@ -71,27 +58,9 @@ export function AppLayout() {
                 <ShieldCheckIcon className="size-4" aria-hidden />
               </span>
               <span className="text-foreground hidden text-base sm:inline">Solution</span>
-            </NavLink>
+            </Link>
 
-            <nav className="hidden items-center gap-1 md:flex" aria-label="Main navigation">
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  end={item.end}
-                  className={({ isActive }) =>
-                    cn(
-                      'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                      isActive
-                        ? 'bg-primary/10 text-primary'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground',
-                    )
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              ))}
-            </nav>
+            <MainNavigation />
           </div>
 
           <UserMenu />

@@ -4,6 +4,7 @@ namespace Solution.Infrastructure.Persistence.Entities;
 
 public sealed class UserRecord
 {
+    // Baseline migration debt: shipped auth identity uses a GUID key.
     public Guid Id { get; set; }
 
     public required string DisplayName { get; set; }

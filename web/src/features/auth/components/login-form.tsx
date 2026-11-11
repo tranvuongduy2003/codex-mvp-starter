@@ -12,15 +12,16 @@ import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { useAuthStore } from '@/store/auth-store'
 import { ApiError } from '@/types/api-problem'
-import { loginFormSchema, type LoginFormValues, type LoginLocationState } from '@/types/auth'
 
-import * as authApi from './api'
-import { clearUserScopedQueries } from './clear-user-queries'
+import * as authApi from '../api'
+import { clearUserScopedQueries } from '../clear-user-queries'
 import {
   applyLoginApiError,
   loginCookiesRequiredMessage,
   loginTransientErrorMessage,
-} from './map-login-error'
+} from '../errors'
+import { authQueryKeys } from '../query-keys'
+import { loginFormSchema, type LoginFormValues, type LoginLocationState } from '../schemas'
 
 function areCookiesEnabled(): boolean {
   return typeof navigator === 'undefined' || navigator.cookieEnabled
@@ -54,7 +55,7 @@ export function LoginForm() {
 
       try {
         await queryClient.fetchQuery({
-          queryKey: ['auth', 'session'],
+          queryKey: authQueryKeys.session(),
           queryFn: ({ signal }) => authApi.getCurrentUser(signal),
         })
       } catch (error) {
@@ -146,7 +147,7 @@ export function LoginForm() {
       <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
         {loginMutation.isPending ? (
           <>
-            <Spinner className="mr-2" />
+            <Spinner data-icon="inline-start" />
             Signing in…
           </>
         ) : (

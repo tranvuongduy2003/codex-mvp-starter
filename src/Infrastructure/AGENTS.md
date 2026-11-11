@@ -11,6 +11,10 @@ Applies to `src/Infrastructure/**`.
 - PostgreSQL schema `app` is authoritative.
 - Redis is disposable/rebuildable cache and session infrastructure.
 - Default EF queries to no tracking unless mutation or identity resolution requires tracking.
+- Map internal primary and foreign keys as `integer`/`bigint` (C# `int`/`long`) with identity or
+  sequence generation. Do not introduce `uuid` PK/FK columns or opaque internal GUIDs; a GUID
+  column is only for a separately named external/public identifier intentionally exposed through a
+  third-party API and marked `// id-policy: external-id`.
 - Keep avatar relational state to object keys and metadata; do not store bytes or expiring presigned URLs.
 
 ## EF Core migrations

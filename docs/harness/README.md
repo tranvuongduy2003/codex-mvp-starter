@@ -1,10 +1,10 @@
-﻿---
+---
 doc_schema: solution-doc-v1
 doc_kind: harness_doc
 doc_id: harness.index
 title: Codex Harness
 status: active
-last_updated: 2026-07-11
+last_updated: 2026-11-11
 owner: codex
 language: en
 applies_to: codex_harness
@@ -17,8 +17,8 @@ This harness describes how Codex should plan, implement, verify, and review work
 ## Core Files
 
 - `AGENTS.md`: standing repository instructions.
-- `.agents/skills/`: reusable workflows for backend, web, E2E, OpenAPI, and harness work.
-- `.codex/agents/`: role prompts for focused review or implementation passes.
+- `.agents/skills/`: reusable workflows for backend, web, E2E, OpenAPI, component-first UI, and harness work.
+- `.codex/agents/`: role prompts for focused review or implementation passes, including `ui-reviewer`.
 - `.codex/hooks.json`: hook registration.
 - `.codex/hooks/`: deterministic guard, formatter, and stop verification scripts.
 - `scripts/agent/Test-HarnessPolicy.ps1`: regression sensor for guardrails and operating behavior.
@@ -40,8 +40,6 @@ See:
 - `repository-view.md`
 - `shared-substrate.md`
 - `caveats.md`
-
-
 
 
 

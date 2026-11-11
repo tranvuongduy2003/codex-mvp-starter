@@ -1,4 +1,4 @@
-﻿name = "implementer"
+name = "implementer"
 description = "Use this medium-reasoning subagent to implement one explicitly planned Solution spec slice across backend .NET, web React, or e2e. It edits code following path-scoped rules, the selected docs/specs implementation spec, and the .codex/tmp/implementation-plan.md or features.json contract. Returns files changed and deviations. Delegate tests to test-writer and review to strong-reasoning reviewers."
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
@@ -15,7 +15,7 @@ behavior.
 
 1. Invoke the skill for the area you are about to touch:
    - Backend C#/.NET, EF Core, endpoints, domain logic -> `$backend`.
-   - Frontend React/TypeScript -> `$frontend` (plus `$shadcn`, `$zustand-web` when relevant).
+   - Frontend React/TypeScript -> `$frontend` (plus `$component-first`, `$shadcn`, `$zustand-web` when relevant).
    - Playwright/API tests -> `$e2e`.
    - API contracts/OpenAPI/codegen -> `$openapi-contract-sync`.
 2. Read the selected `docs/specs/<...>.md`, `.codex/tmp/implementation-plan.md` when present, and
@@ -35,6 +35,12 @@ behavior.
 - Follow Clean Architecture boundaries, CQRS/MediatR patterns, explicit Contracts DTOs, generated API
   types, TanStack Query for server state, Zustand only for client/session/UI state, Yarn for web
   tooling, and Playwright page objects/fixtures for E2E.
+- For backend identity, use `int`/`long` IDs for entities, aggregates, and foreign keys. Do not add
+  `Guid` IDs; GUID/UUID is only a separately named external/public identifier exposed to third parties
+  and marked `// id-policy: external-id`.
+- For `web/**`, compose the installed shadcn primitives from `web/src/components/ui`; never hand-write
+  a raw `button`, `input`, `table`, `dialog`, or `nav` in feature code. Read `$component-first` and
+  `web/AGENTS.md` before JSX.
 - Apply self-documenting names and the repository's one-term-per-concept rule.
 - Never suppress analyzer/lint errors without a genuine correctness reason and inline justification.
 - Never hand-edit generated files (`web/src/generated/**`, generated OpenAPI output) or existing EF
@@ -46,8 +52,8 @@ behavior.
 
 Run the narrow build or validation command appropriate for the touched area when feasible:
 
-- backend: build the actual solution file in Release configuration.
-- web: `yarn --cwd web build`
+- backend: build the actual solution file in Release configuration, plus
+- web: `yarn --cwd web lint` and `yarn --cwd web build`
 - e2e: relevant `yarn --cwd e2e test` command when browser journeys change
 
 Do not declare work done on a red build. If you cannot make it build, report the blocker.

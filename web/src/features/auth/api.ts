@@ -1,29 +1,12 @@
-import { apiClient } from '@/lib/api'
+import { apiClient, type ApiJsonBody, type ApiJsonResponse } from '@/lib/api'
 
-export type LoginRequest = {
-  email: string
-  password: string
-}
+export type LoginRequest = ApiJsonBody<'/api/auth/login', 'post'>
 
-export type LoginUserResponse = {
-  userId: string
-  displayName: string
-  email: string
-  role: string
-}
+export type LoginUserResponse = ApiJsonResponse<'/api/auth/login', 'post'>
 
-export type RegisterRequest = {
-  displayName: string
-  email: string
-  password: string
-}
+export type RegisterRequest = ApiJsonBody<'/api/users', 'post'>
 
-export type UserRegistrationResponse = {
-  userId: string
-  displayName: string
-  email: string
-  createdAt: string
-}
+export type UserRegistrationResponse = ApiJsonResponse<'/api/users', 'post', 201>
 
 export function getCurrentUser(signal?: AbortSignal) {
   return apiClient.get<LoginUserResponse>('/api/auth/me', { signal })

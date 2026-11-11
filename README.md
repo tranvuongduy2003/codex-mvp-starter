@@ -6,18 +6,18 @@ backend, a React + TypeScript + Vite frontend, and .NET Aspire for the local top
 ## About
 
 The starter keeps only the cross-product foundation: users, authentication, authorization, session
-persistence, profile/avatar support, OpenAPI sync, frontend route guards, e2e auth journeys, scripts,
-and CI.
+persistence, profile/avatar support, OpenAPI sync, frontend route guards, e2e auth journeys, the
+complete shadcn `base-nova` component set, scripts, and CI.
 
 ## Codex Agent Setup
 
 | Piece | Purpose |
 | --- | --- |
 | `AGENTS.md` and nested `AGENTS.md` files | Repository and path-scoped working rules |
-| `.agents/skills/` | Reusable workflows for backend, frontend, E2E, OpenAPI, MCP, and harness work |
-| `.codex/agents/` | Focused subagent prompts for review, security, acceptance, implementation, and harness diagnosis |
+| `.agents/skills/` | Reusable workflows for backend, frontend, component-first UI, E2E, OpenAPI, MCP, and harness work |
+| `.codex/agents/` | Focused subagent prompts for review, security, UI policy, acceptance, implementation, and harness diagnosis |
 | `.codex/hooks.json` and `.codex/hooks/` | Guard, formatting, telemetry, and stop-verification hooks |
-| `scripts/agent/` | Current validation sensors: changed-code, docs, and harness policy |
+| `scripts/agent/` | Current validation sensors: changed-code, docs, harness policy, and UI component policy |
 
 Agents should read the smallest relevant set of `docs/product.md`, `docs/features.md`, and
 `docs/technical.md`, then the applicable `AGENTS.md` files and skill instructions before changing
@@ -29,6 +29,8 @@ code.
 - PostgreSQL is authoritative; Redis is rebuildable cache/session infrastructure.
 - MinIO-compatible object storage supports user avatars.
 - React 19 + Vite frontend consumes generated OpenAPI types.
+- Complete shadcn `base-nova` component set; feature UI composes those primitives instead of raw HTML.
+- Numeric `int`/`long` backend IDs; GUID/UUID is reserved for documented third-party-facing identifiers.
 - .NET Aspire AppHost is the local topology source of truth. Do not add hand-authored Docker Compose.
 
 ## Prerequisites

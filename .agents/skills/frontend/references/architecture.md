@@ -25,7 +25,14 @@ rg --files web/src/features/<feature>
 - Add or alter routes through the owning feature route file when the feature already has one.
 - Keep page-level orchestration in pages and reusable workflow pieces in feature components.
 - Use shared layout/app wiring only when multiple features need the behavior.
-- When introducing a new feature folder, mirror the smallest existing feature with similar needs.
+- When introducing a new feature folder, mirror the auth feature anatomy:
+  `api.ts`, `schemas.ts`, `errors.ts`, `query-keys.ts`, `components/`, `hooks/`,
+  `pages/`, `routes.tsx`, and an `index.ts` only when another module imports the feature.
+- Keep feature-owned Zod schemas/form types in `features/<feature>/schemas.ts`; keep only
+  cross-feature types in `web/src/types`.
+- Lazy-load pages from route files (`lazy: async () => { const { X } = await import(...) }`).
+- Import shared feature API/keys/routes through the feature barrel, and use relative
+  imports inside the feature.
 
 ## Verify
 

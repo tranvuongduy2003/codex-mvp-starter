@@ -6,13 +6,26 @@ import { RouterProvider } from 'react-router-dom'
 import { paths } from '@/app/paths'
 import { router } from '@/app/router'
 import { Toaster } from '@/components/ui/sonner'
+import { TooltipProvider } from '@/components/ui/tooltip'
 import { useAuthStore } from '@/store/auth-store'
+import { ApiError } from '@/types/api-problem'
 
+// staleTime / gcTime keep the UI snappy while still re-fetching when data is
+// genuinely stale. Mutations never retry; client errors are not retried either,
+// only transient 5xx/network failures.
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      staleTime: 60_000,
+      gcTime: 5 * 60_000,
       refetchOnWindowFocus: false,
-      retry: 1,
+      retry: (failureCount, error) => {
+        if (error instanceof ApiError && error.status < 500) return false
+        return failureCount < 2
+      },
+    },
+    mutations: {
+      retry: false,
     },
   },
 })
@@ -45,9 +58,11 @@ export function AppProviders() {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <UnauthorizedListener />
-        <RouterProvider router={router} />
-        <Toaster richColors closeButton />
+        <TooltipProvider>
+          <UnauthorizedListener />
+          <RouterProvider router={router} />
+          <Toaster richColors closeButton />
+        </TooltipProvider>
       </QueryClientProvider>
     </HelmetProvider>
   )

@@ -13,11 +13,11 @@ export function AuthLayout() {
         </div>
       </header>
 
-      <div className="flex flex-1 items-center justify-center px-4 py-12">
-        <div className="surface-panel w-full max-w-md p-8">
+      <main className="flex flex-1 items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
           <Outlet />
         </div>
-      </div>
+      </main>
     </div>
   )
 }

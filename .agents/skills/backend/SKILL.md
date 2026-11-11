@@ -1,4 +1,4 @@
-﻿---
+---
 name: backend
 description: "Procedural backend workflow for EventHub .NET work: source-driven scouting, layer-specific AGENTS routing, Domain/Application/Infrastructure/Api/Contracts/AppHost changes, EF Core/PostgreSQL, MediatR/CQRS, System.Threading.Channels integration-event publisher/consumer work, backend tests, Aspire-aware verification, and OpenAPI handoff without duplicating repository rules."
 ---
@@ -32,7 +32,8 @@ Prefer `rg`/`rg --files` to learn the current implementation from source:
 rg -n "sealed record .*Command|sealed record .*Query|class .*Handler" src/Application
 rg -n "class .*Endpoint|interface IEndpoint|MapEndpoints" src/Api
 rg -n "ApplicationDatabaseContext|IEntityTypeConfiguration|DbSet<|Migration" src/Infrastructure
-rg -n "record struct .*Id|BusinessRuleValidationException|AddDomainEvent" src/Domain
+rg -n "record struct .*Id|interface I.*Repository|BusinessRuleValidationException|AddDomainEvent" src/Domain
+rg -n "record struct .*Id\\(|\\bGuid\\b|public .*Id \\{" src/Domain src/Contracts src/Infrastructure/Persistence/Entities
 rg -n "AssertValidationFailedAsync|IntegrationTestFixture|ShouldBe" tests
 ```
 
@@ -41,12 +42,13 @@ Open the concrete files you find. Let local naming, result mapping, builders, fi
 ## Workflow
 
 1. Classify the change by layer and risk: domain invariant, application orchestration, persistence/adapter, messaging adapter, HTTP contract, AppHost/runtime, or tests.
-2. Load only the applicable nested instructions and reference below.
-3. Trace the full vertical slice when behavior crosses layers: endpoint/contract -> command/query -> handler -> domain method -> repository/adapter -> tests.
-4. Plan intended files, invariants/acceptance criteria, verification command, rollback point, and approval boundary.
-5. For bugs or risky behavior, write or update a focused failing test first when feasible.
-6. Edit narrowly and preserve existing project patterns.
-7. Run focused checks, then broaden with the repo verifier before handoff when the change crosses layers.
+2. Check identity before modeling: new IDs must be `int`/`long`, not `Guid`; GUID is only for a separately named external identifier exposed to third parties (`docs/technical.md`).
+3. Load only the applicable nested instructions and reference below.
+4. Trace the full vertical slice when behavior crosses layers: endpoint/contract -> command/query -> handler -> domain method -> repository/adapter -> tests.
+5. Plan intended files, invariants/acceptance criteria, verification command, rollback point, and approval boundary.
+6. For bugs or risky behavior, write or update a focused failing test first when feasible.
+7. Edit narrowly and preserve existing project patterns.
+8. Run focused checks, then broaden with the repo verifier before handoff when the change crosses layers.
 
 ## Reference Routing
 

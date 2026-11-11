@@ -17,7 +17,7 @@ Frontend topology:
 
 - React + TypeScript + Vite
 - Yarn
-- Tailwind/shadcn-style primitives where applicable
+- Complete shadcn `base-nova` component set; UI must compose those primitives
 - Generated OpenAPI client/types consumed from the contract pipeline
 
 ## Source of truth
@@ -46,6 +46,15 @@ docs are updated first.
 7. `Solution.ServiceDefaults` is mandatory for `Api`.
 8. Protected operations must be enforced on the backend. Frontend guards are UX support only.
 9. Do not add production dependencies without explicit approval and a license check.
+10. Web UI must compose the installed shadcn primitives in `web/src/components/ui`. Raw
+    interactive elements (`button`, `input`, `select`, `textarea`, `table`, `dialog`, etc.)
+    are allowed only inside that primitive directory. Follow `web/AGENTS.md`.
+11. Backend entity, aggregate, and foreign-key identifiers use `int` or `long` (PostgreSQL
+    `integer`/`bigint`). Do not add `Guid` IDs or use GUIDs as opaque internal identifiers. A
+    GUID/UUID is allowed only for a separately named external/public identifier intentionally
+    exposed through a third-party API, and it must be marked `// id-policy: external-id` with
+    the API exposure documented. Authentication, authorization, and session identifiers are the
+    only existing exception and are migration debt; see `docs/technical.md`.
 
 ## Repository layout
 
@@ -77,6 +86,7 @@ started at the repository root.
 | `contracts/AGENTS.md` | Committed OpenAPI source and contract-generation workflow |
 | `tests/AGENTS.md` | Domain unit, API integration, and shared fixtures |
 | `web/AGENTS.md` | React/Vite frontend, forms, server/client state, accessibility, route guards |
+| `web/src/components/ui/AGENTS.md` | shadcn primitive ownership, API compatibility, variant rules |
 | `web/src/generated/AGENTS.md` | Generated API output; source-only changes are forbidden here |
 | `e2e/AGENTS.md` | Playwright auth/session journeys |
 
@@ -89,6 +99,7 @@ Use the relevant skill first for scoped work:
 | Full idea/spec/task loop | `$cook` |
 | Backend, EF, endpoint, auth/session, backend test | `$backend` |
 | Frontend route/component/form/styling | `$frontend` |
+| UI composition, component choice, raw-HTML audit | `$component-first` |
 | Playwright browser journeys | `$e2e` |
 | shadcn UI primitives / `components.json` | `$shadcn` |
 | Zustand stores | `$zustand-web` |
@@ -113,6 +124,9 @@ yarn --cwd web api:verify
 yarn --cwd web build
 yarn --cwd e2e test
 ```
+
+On Windows PowerShell, prefer `yarn.cmd` when `yarn.ps1` is blocked by execution policy; the
+agent scripts resolve the Yarn entry point automatically.
 
 ## GitHub operations
 

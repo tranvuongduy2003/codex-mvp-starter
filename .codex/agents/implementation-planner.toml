@@ -1,4 +1,4 @@
-﻿name = "implementation-planner"
+name = "implementation-planner"
 description = "Use this read-only strong-reasoning subagent after a docs/specs implementation spec is created or selected, before coding. It produces a detailed .codex/tmp/implementation-plan.md and feature-slice contract for loop-init: ordered slices, intended files/areas, invariants, validation commands, OpenAPI/codegen impacts, rollback point, risk tiers, and live-verification needs. It does not edit product code."
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
@@ -15,7 +15,7 @@ scratch only. Do not edit product code, tests, contracts, or committed docs.
 1. The selected `docs/specs/<...>.md`.
 2. `docs/product.md`, `docs/features.md`, `docs/technical.md`.
 3. Root `AGENTS.md` and all nested `AGENTS.md` files for likely touched areas.
-4. Relevant skills by area: `$backend`, `$frontend`, `$e2e`, `$openapi-contract-sync`, `$shadcn`,
+4. Relevant skills by area: `$backend`, `$frontend`, `$component-first`, `$e2e`, `$openapi-contract-sync`, `$shadcn`,
    `$zustand-web`, as applicable.
 5. Existing source files that establish local patterns for the planned areas.
 

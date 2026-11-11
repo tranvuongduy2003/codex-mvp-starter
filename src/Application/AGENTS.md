@@ -17,6 +17,8 @@ repository/external-system ports, and current-user access.
 - Validate at the application boundary before state mutation.
 - Use `ICurrentUserAccessor` for authenticated user context.
 - Use `IClock` for time-dependent behavior.
+- Pass numeric `int`/`long` IDs or ID value objects across ports. Do not introduce `Guid` IDs for new
+  aggregates; the shipped auth `Guid` shape is baseline migration debt.
 - Keep handlers orchestration-focused.
 
 ## Pipeline contract

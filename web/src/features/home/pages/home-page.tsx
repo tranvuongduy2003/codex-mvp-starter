@@ -1,5 +1,7 @@
 import { KeyRoundIcon, ShieldCheckIcon, UserIcon } from 'lucide-react'
 
+import { PageTitle } from '@/app/components/page-title'
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuthStore } from '@/store/auth-store'
 
@@ -11,8 +13,12 @@ export function HomePage() {
 
   return (
     <div className="flex flex-col gap-8">
+      <PageTitle title="Dashboard" />
+
       <section className="flex flex-col gap-2">
-        <p className="text-primary text-sm font-medium">Application shell</p>
+        <Badge variant="secondary" className="w-fit">
+          Application shell
+        </Badge>
         <h1 className="text-foreground text-3xl font-bold tracking-tight">
           Welcome back{displayName ? `, ${displayName}` : ''}
         </h1>

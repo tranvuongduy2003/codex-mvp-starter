@@ -16,8 +16,14 @@ var redis = builder.AddRedis("cache")
         redisCommander.WithUrlForEndpoint("http", url => url.DisplayText = "Redis Commander"))
     .WithEndpoint(port: 6379, targetPort: 6379);
 
-var storage = builder.AddMinioContainer("storage")
-    .WithDataVolume("solution-storage-data");
+var storage = builder.AddContainer("storage", "bitnamilegacy/minio", "latest")
+    .WithEnvironment("MINIO_ROOT_USER", "minioadmin")
+    .WithEnvironment("MINIO_ROOT_PASSWORD", "minioadmin")
+    .WithArgs("server", "/bitnami/minio/data", "--console-address", ":9001")
+    .WithEndpoint("http", endpoint =>
+    {
+        endpoint.TargetPort = 9000;
+    });
 
 var seeder = builder.AddProject<Projects.Solution_DataSeeder>("seeder")
     .WithReference(applicationDatabase)
@@ -27,7 +33,7 @@ var seeder = builder.AddProject<Projects.Solution_DataSeeder>("seeder")
 var api = builder.AddProject<Projects.Solution_Api>("api", launchProfileName: "https")
     .WithReference(applicationDatabase)
     .WithReference(redis, connectionName: "Cache")
-    .WithReference(storage)
+    .WithEnvironment("ConnectionStrings__storage", storage.GetEndpoint("http"))
     .WaitFor(postgres)
     .WaitFor(redis)
     .WaitFor(storage)

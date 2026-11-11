@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
   Agent-friendly verification runner for changed Solution files.
@@ -14,6 +14,7 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 Set-Location -LiteralPath $repoRoot
 $powerShellExecutable = if (Get-Command pwsh -ErrorAction SilentlyContinue) { 'pwsh' } else { 'powershell' }
+$yarnExecutable = if (Get-Command yarn.cmd -ErrorAction SilentlyContinue) { 'yarn.cmd' } else { 'yarn' }
 $testDocsMemoryCommand = "$powerShellExecutable -NoProfile -ExecutionPolicy Bypass -File scripts/agent/Test-DocsMemory.ps1"
 $testHarnessPolicyCommand = "$powerShellExecutable -NoProfile -ExecutionPolicy Bypass -File scripts/agent/Test-HarnessPolicy.ps1"
 
@@ -79,6 +80,7 @@ $mappedFiles = [System.Collections.Generic.List[object]]::new()
 
 $backendChanged = $false
 $webChanged = $false
+$webUiChanged = $false
 $e2eChanged = $false
 $contractChanged = $false
 $docsOrHarnessChanged = $false
@@ -89,19 +91,24 @@ foreach ($file in $files) {
     if ($file -match '^src/.*\.cs$' -or $file -match '^tests/.*\.cs$') {
         $backendChanged = $true
         $steps.Add('dotnet build Solution.slnx -c Release') | Out-Null
+        if ($file -match '^src/.*\.cs$') {
+        }
     }
     elseif ($file -match '^web/.*\.(ts|tsx|js|jsx|css)$' -or $file -eq 'web/package.json' -or $file -eq 'web/yarn.lock') {
         $webChanged = $true
-        $steps.Add('yarn --cwd web build') | Out-Null
+        $steps.Add("$yarnExecutable --cwd web build") | Out-Null
+        if ($file -match '^web/.*\.tsx$' -or $file -match '^web/src/components/ui/') {
+            $webUiChanged = $true
+        }
     }
     elseif ($file -match '^e2e/.*\.(ts|tsx|js|jsx)$' -or $file -eq 'e2e/package.json' -or $file -eq 'e2e/yarn.lock') {
         $e2eChanged = $true
-        $steps.Add('yarn --cwd e2e test') | Out-Null
+        $steps.Add("$yarnExecutable --cwd e2e test") | Out-Null
     }
 
     if ($file -match '^contracts/openapi/' -or $file -match '^src/Contracts/' -or $file -match '^src/Api/Endpoints/' -or $file -match '^web/src/lib/api/' -or $file -match '^web/src/generated/') {
         $contractChanged = $true
-        $steps.Add('yarn --cwd web api:verify') | Out-Null
+        $steps.Add("$yarnExecutable --cwd web api:verify") | Out-Null
     }
 
     if ($file -match '(^|/)AGENTS\.md$' -or $file -match '^(docs/|\.codex/config\.toml$|\.codex/agents/|\.codex/hooks/|\.codex/hooks\.json$|\.agents/skills/|scripts/agent/)') {
@@ -125,13 +132,15 @@ if ($backendChanged) {
     Add-Command -Commands $commands -Seen $seen -Command 'dotnet build Solution.slnx -c Release'
 }
 if ($webChanged -or $contractChanged) {
-    Add-Command -Commands $commands -Seen $seen -Command 'yarn --cwd web build'
+    Add-Command -Commands $commands -Seen $seen -Command "$yarnExecutable --cwd web build"
+}
+if ($webUiChanged) {
 }
 if ($e2eChanged) {
-    Add-Command -Commands $commands -Seen $seen -Command 'yarn --cwd e2e test'
+    Add-Command -Commands $commands -Seen $seen -Command "$yarnExecutable --cwd e2e test"
 }
 if ($contractChanged) {
-    Add-Command -Commands $commands -Seen $seen -Command 'yarn --cwd web api:verify'
+    Add-Command -Commands $commands -Seen $seen -Command "$yarnExecutable --cwd web api:verify"
 }
 if ($docsOrHarnessChanged) {
     Add-Command -Commands $commands -Seen $seen -Command $testDocsMemoryCommand

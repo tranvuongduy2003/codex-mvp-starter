@@ -18,6 +18,13 @@ Applies to all code under `src/**`. Read the nearest child `AGENTS.md` before ed
 - Keep EF Core, cache/session, password hashing, and object storage adapters in Infrastructure.
 - Keep HTTP/auth/session transport in Api.
 - Return explicit Contracts DTOs from endpoints, never domain entities or EF records.
+- Use `int` or `long` (PostgreSQL `integer`/`bigint`) for entity, aggregate, and foreign-key IDs.
+  Do not add `Guid` IDs or use GUIDs as opaque internal identifiers. A GUID/UUID is permitted only
+  for a separately named external/public identifier that is intentionally exposed through a
+  third-party API, is marked `// id-policy: external-id`, and documents that API exposure.
+- Authentication and authorization/session identifiers are the only backend exception to the
+  numeric-ID rule. They are existing migration debt; do not extend that exception to new domain
+  entities, aggregates, foreign keys, contracts, or other application data.
 - Use `Result`/`Error` for expected failures.
 - Inject `IClock`; do not read system time directly in domain or application logic.
 - Keep sensitive values out of logs, errors, comments, fixtures, and telemetry.

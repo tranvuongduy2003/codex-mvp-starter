@@ -11,11 +11,12 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/c
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { useAuthStore } from '@/store/auth-store'
-import { registerFormSchema, type RegisterFormValues } from '@/types/auth'
 
-import * as authApi from './api'
-import { clearUserScopedQueries } from './clear-user-queries'
-import { applyRegisterApiError } from './map-register-error'
+import * as authApi from '../api'
+import { clearUserScopedQueries } from '../clear-user-queries'
+import { applyRegisterApiError } from '../errors'
+import { authQueryKeys } from '../query-keys'
+import { registerFormSchema, type RegisterFormValues } from '../schemas'
 
 export function RegisterForm() {
   const navigate = useNavigate()
@@ -54,14 +55,14 @@ export function RegisterForm() {
 
       try {
         await queryClient.fetchQuery({
-          queryKey: ['auth', 'session'],
+          queryKey: authQueryKeys.session(),
           queryFn: ({ signal }) => authApi.getCurrentUser(signal),
         })
       } catch {
         // Account created; cookie verification failed — user can sign in manually (EC-07).
       }
 
-      queryClient.setQueryData(['auth', 'session'], {
+      queryClient.setQueryData(authQueryKeys.session(), {
         userId: response.userId,
         displayName: response.displayName,
         email: response.email,
@@ -163,7 +164,7 @@ export function RegisterForm() {
       <Button type="submit" className="w-full" disabled={registerMutation.isPending}>
         {registerMutation.isPending ? (
           <>
-            <Spinner className="mr-2" />
+            <Spinner data-icon="inline-start" />
             Creating account…
           </>
         ) : (

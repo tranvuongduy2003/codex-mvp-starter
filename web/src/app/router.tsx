@@ -4,7 +4,6 @@ import { paths } from '@/app/paths'
 import { ProtectedRoute } from '@/app/routes/protected-route'
 import { PublicRoute } from '@/app/routes/public-route'
 import { authRoutes } from '@/features/auth'
-import { HomePage } from '@/features/home/pages/home-page'
 import { AppLayout } from '@/layouts/app-layout'
 import { AuthLayout } from '@/layouts/auth-layout'
 
@@ -23,7 +22,15 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <AppLayout />,
-        children: [{ index: true, element: <HomePage /> }],
+        children: [
+          {
+            index: true,
+            lazy: async () => {
+              const { HomePage } = await import('@/features/home/pages/home-page')
+              return { Component: HomePage }
+            },
+          },
+        ],
       },
     ],
   },

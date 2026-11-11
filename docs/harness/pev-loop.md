@@ -1,10 +1,10 @@
-﻿---
+---
 doc_schema: solution-doc-v1
 doc_kind: harness_doc
 doc_id: harness.pev-loop
 title: Plan, Execute, Verify Loop
 status: active
-last_updated: 2026-07-11
+last_updated: 2026-11-11
 owner: codex
 language: en
 applies_to: codex_harness
@@ -32,6 +32,10 @@ The harness uses a simple loop for repository work.
 
 - Run focused checks first.
 - Broaden when the change crosses layers or touches shared behavior.
+- For `src/**` changes, new entity/aggregate/contract IDs must be numeric `int`/`long`, not GUID.
+- For `web/**` changes, compose shadcn primitives and run
+  ESLint with lint/build. A green build does not
+  excuse a raw `<button>`, `<input>`, `<table>`, or `<dialog>` in feature code.
 - Record failures honestly and fix them when they are in scope.
 - When a check cannot be run, state why and name the residual risk.
 
@@ -40,7 +44,6 @@ The harness uses a simple loop for repository work.
 - Passing tests are evidence, not proof. Compare the final behavior to the user's request.
 - If implementation uncovers ambiguity, pause only for blocking questions.
 - If verification reveals drift, update the implementation or tests before handoff.
-
 
 
 

@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
   Validate current Solution Codex harness guardrails.
@@ -163,9 +163,20 @@ $requiredFiles = @(
     '.codex/agents/security-reviewer.toml',
     '.codex/agents/acceptance-verifier.toml',
     '.codex/agents/harness-doctor.toml',
+    '.codex/agents/ui-reviewer.toml',
     'scripts/agent/Verify-ChangedCode.ps1',
-    'scripts/agent/Test-DocsMemory.ps1',
+    'scripts/agent/Test-DocsMemory.ps1'
     'scripts/agent/Test-HarnessPolicy.ps1'
+    '.agents/skills/component-first/SKILL.md',
+    'web/AGENTS.md',
+    'web/src/components/ui/AGENTS.md',
+    'web/src/components/ui/README.md',
+    'web/src/features/auth/index.ts',
+    'web/src/features/auth/schemas.ts',
+    'web/src/features/auth/errors.ts',
+    'web/src/features/auth/query-keys.ts',
+    'web/src/features/auth/components/index.ts',
+    'web/src/features/auth/hooks/index.ts'
 )
 
 foreach ($file in $requiredFiles) {
@@ -227,13 +238,13 @@ Test-FileContains '.codex/hooks/guard-dangerous.ps1' @(
 
 Test-FileContains '.codex/hooks/format-on-write.ps1' @(
     'dotnet format Solution.slnx',
-    'yarn --cwd web prettier'
+    '--cwd web prettier'
 )
 
 Test-FileContains '.codex/hooks/verify-on-stop.ps1' @(
     'dotnet build Solution.slnx',
-    'yarn --cwd web build',
-    'yarn --cwd e2e test',
+    '--cwd web build',
+    '--cwd e2e test',
     'heavySensorWarnings',
     'large changed surface without heavy sensors'
 )
@@ -243,7 +254,60 @@ Test-FileContains 'AGENTS.md' @(
     'docs/features.md',
     'docs/technical.md',
     '$create-pr',
+    '$component-first',
+    'component-first',
+    'web/src/components/ui',
     'scripts/agent/Verify-ChangedCode.ps1'
+)
+
+Test-FileContains 'web/AGENTS.md' @(
+    'Component-first UI contract',
+    'Banned raw elements',
+    'Feature module anatomy',
+    'query-keys.ts',
+    'lazy: async',
+    'web/src/components/ui'
+)
+
+Test-FileContains 'web/src/components/ui/AGENTS.md' @(
+    'Keep the upstream API',
+    'No eager barrel'
+)
+
+Test-FileContains '.agents/skills/component-first/SKILL.md' @(
+    'raw interactive',
+    'Selection Pass',
+    'Audit Procedure'
+)
+
+Test-FileContains 'AGENTS.md' @(
+    'bigint',
+    'id-policy: external-id'
+)
+
+Test-FileContains 'src/AGENTS.md' @(
+    'int` or `long',
+    'PostgreSQL `integer`/`bigint`',
+    'id-policy: external-id'
+)
+
+Test-FileContains 'src/Domain/AGENTS.md' @(
+    'never `Guid`'
+)
+
+Test-FileContains 'src/Infrastructure/AGENTS.md' @(
+    'integer`/`bigint`',
+    'uuid'
+)
+
+Test-FileContains 'src/Contracts/AGENTS.md' @(
+    'integer`/`int64`',
+    'external/public identifier'
+)
+
+Test-FileContains 'docs/technical.md' @(
+    'Identifier Policy',
+    'Baseline exception'
 )
 
 Test-FileContains '.agents/skills/cook/SKILL.md' @(
@@ -302,7 +366,8 @@ foreach ($agent in @(
     '.codex/agents/code-reviewer.toml',
     '.codex/agents/security-reviewer.toml',
     '.codex/agents/acceptance-verifier.toml',
-    '.codex/agents/harness-doctor.toml'
+    '.codex/agents/harness-doctor.toml',
+    '.codex/agents/ui-reviewer.toml'
 )) {
     Test-FileContains $agent @('Solution')
     $text = Get-Text $agent
@@ -343,7 +408,6 @@ Test-GuardAllowsOrDenies -Payload $allowExecBuildPayload -ShouldDeny $false -Lab
 
 Test-VerifyPlanIncludesHarnessPolicy -Path '.codex/config.toml' -Label 'config change'
 Test-VerifyPlanIncludesHarnessPolicy -Path 'web/AGENTS.md' -Label 'nested AGENTS change'
-
 $telemetryPayload = '{"session_id":"policy-test","source":"startup"}'
 $telemetryResult = Invoke-Hook -RelativePath '.codex/hooks/telemetry-session.ps1' -Payload $telemetryPayload
 if ($null -ne $telemetryResult -and $telemetryResult.ExitCode -ne 0) {

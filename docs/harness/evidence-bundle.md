@@ -1,10 +1,10 @@
-﻿---
+---
 doc_schema: solution-doc-v1
 doc_kind: harness_doc
 doc_id: harness.evidence-bundle
 title: Evidence Bundle
 status: active
-last_updated: 2026-07-11
+last_updated: 2026-11-11
 owner: codex
 language: en
 applies_to: codex_harness
@@ -38,7 +38,8 @@ For non-trivial changes, handoff should include enough evidence for another engi
 - Do not claim a check passed unless it was run in this workspace.
 - Prefer exact commands over vague labels.
 - Include skipped checks when they are relevant to the risk of the change.
-
+- For `web/**` UI changes, include the UI policy sensor's `status`, `componentCount`, and
+  violation count; a build pass alone is not component-first evidence.
 
 
 

@@ -32,7 +32,8 @@ Open the matching registration file when behavior depends on pipeline, DI, endpo
 
 Before preserving old behavior, compare it against:
 
-- relevant `ARCH-*`, `INV-*`, and bounded-context sections in `docs/technical.md`;
+- relevant `ARCH-*`, `INV-*`, and bounded-context sections in `docs/technical.md`, including the
+  `Identifier Policy` section;
 - relevant `F-*` acceptance criteria in `docs/features.md`;
 - the scoped `AGENTS.md` for the layer being edited;
 - current code registrations and tests.

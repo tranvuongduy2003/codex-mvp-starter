@@ -1,4 +1,4 @@
-﻿# Stop hook: verify the session left the working tree in a clean state. It always
+# Stop hook: verify the session left the working tree in a clean state. It always
 # runs a fast static scan of the changed source files for leftover debug statements,
 # and - when CODEX_STOP_VERIFY_BUILD is set to '1' - additionally runs the relevant
 # build/typecheck for the areas that changed.
@@ -32,6 +32,7 @@ catch {
 
 $repoRoot = (Resolve-Path -LiteralPath "$PSScriptRoot\..\..").Path
 Set-Location -LiteralPath $repoRoot
+$yarnExecutable = if (Get-Command yarn.cmd -ErrorAction SilentlyContinue) { 'yarn.cmd' } else { 'yarn' }
 
 # Deep telemetry: record a metadata-only end-of-turn verify summary so $harness-review can measure
 # verification strength and recovery. Never logs file contents or prompts.
@@ -68,6 +69,7 @@ $changed = $changed | Where-Object { $_ } | Sort-Object -Unique
 
 $backendChanged  = $changed | Where-Object { $_ -like 'src/*' -and $_ -like '*.cs' }
 $webChanged = $changed | Where-Object { $_ -like 'web/*' -and ($_ -like '*.ts' -or $_ -like '*.tsx') }
+$webUiChanged = $changed | Where-Object { $_ -like 'web/*.tsx' }
 $e2eChanged      = $changed | Where-Object { $_ -like 'e2e/*' -and ($_ -like '*.ts' -or $_ -like '*.tsx') }
 
 $stopWarnings = [System.Collections.Generic.List[string]]::new()
@@ -114,15 +116,15 @@ if ($env:CODEX_STOP_VERIFY_BUILD -eq '1') {
         }
     }
     if ($webChanged) {
-        $typecheckOutput = & yarn --cwd web build 2>&1
+        $typecheckOutput = & $yarnExecutable --cwd web build 2>&1
         if ($LASTEXITCODE -ne 0) {
-            $problems.Add("Frontend build failed (yarn --cwd web build):`n$($typecheckOutput | Select-Object -Last 20 | Out-String)")
+            $problems.Add("Frontend build failed ($yarnExecutable --cwd web build):`n$($typecheckOutput | Select-Object -Last 20 | Out-String)")
         }
     }
     if ($e2eChanged) {
-        $checkOutput = & yarn --cwd e2e test 2>&1
+        $checkOutput = & $yarnExecutable --cwd e2e test 2>&1
         if ($LASTEXITCODE -ne 0) {
-            $problems.Add("E2E test failed (yarn --cwd e2e test):`n$($checkOutput | Select-Object -Last 20 | Out-String)")
+            $problems.Add("E2E test failed ($yarnExecutable --cwd e2e test):`n$($checkOutput | Select-Object -Last 20 | Out-String)")
         }
     }
 }
@@ -138,7 +140,6 @@ if ($problems.Count -gt 0) {
 }
 
 exit 0
-
 
 
 

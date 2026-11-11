@@ -6,8 +6,8 @@ import { paths } from '@/app/paths'
 import { useAuthStore } from '@/store/auth-store'
 import { ApiError } from '@/types/api-problem'
 
-import * as authApi from './api'
-import { clearUserScopedQueries } from './clear-user-queries'
+import * as authApi from '../api'
+import { clearUserScopedQueries } from '../clear-user-queries'
 
 const logoutFailedMessage = 'Could not log out. Check your connection and try again.'
 

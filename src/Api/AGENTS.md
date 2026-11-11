@@ -10,6 +10,8 @@ Applies to `src/Api/**`. Contract changes also require reading `src/Contracts/AG
 - Minimal endpoints implement the existing `IEndpoint` convention and are discovered through assembly scanning.
 - Endpoints bind, authenticate/authorize, dispatch to Application, and map results to HTTP only.
 - Return explicit Contracts DTOs, never domain entities or EF models.
+- Keep identifier shape from Contracts/OpenAPI: internal IDs are numeric; `format: uuid` is only a
+  documented external/public identifier.
 - Reuse existing result-to-response and ProblemDetails helpers.
 
 ## Security boundaries

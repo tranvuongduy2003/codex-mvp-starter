@@ -66,6 +66,16 @@ public sealed class MinioObjectStorage : IObjectStorage, IDisposable
     private static ConnectionParameters ParseConnectionString(
         string connectionString)
     {
+        if (!connectionString.Contains(';') &&
+            Uri.TryCreate(connectionString, UriKind.Absolute, out var endpointUri))
+        {
+            return new ConnectionParameters(
+                endpointUri.Authority,
+                "minioadmin",
+                "minioadmin",
+                endpointUri.Scheme.Equals(Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase));
+        }
+
         var parts = connectionString.Split(';', StringSplitOptions.RemoveEmptyEntries);
         string? endpoint = null;
         var accessKey = "minioadmin";

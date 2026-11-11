@@ -1,8 +1,9 @@
-﻿# PostToolUse hook (Write|Edit|MultiEdit): format the file that was just written,
+# PostToolUse hook (Write|Edit|MultiEdit): format the file that was just written,
 # routing by extension to the correct formatter. A formatting failure must never
 # stop the session, so this script always exits 0.
 
 $ErrorActionPreference = 'SilentlyContinue'
+$yarnExecutable = if (Get-Command yarn.cmd -ErrorAction SilentlyContinue) { 'yarn.cmd' } else { 'yarn' }
 
 function Get-InputValue {
     param($Object, [string[]] $Names)
@@ -64,11 +65,11 @@ function Format-Path {
         { $_ -in '.ts', '.tsx' } {
             if ($relative -like 'web/*') {
                 $webRelative = $relative.Substring(4)
-                & yarn --cwd web prettier --write $webRelative 2>&1 | Out-Null
+                & $yarnExecutable --cwd web prettier --write $webRelative 2>&1 | Out-Null
             }
             elseif ($relative -like 'e2e/*') {
                 $e2eRelative = "../$relative"
-                & yarn --cwd web prettier --write $e2eRelative 2>&1 | Out-Null
+                & $yarnExecutable --cwd web prettier --write $e2eRelative 2>&1 | Out-Null
             }
         }
         default { }

@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
   Validate the simplified Solution docs tree.
@@ -144,6 +144,24 @@ function Test-MarkdownLinks {
     }
 }
 
+function Get-ScannableRepositoryFiles {
+    param([string]$Directory)
+
+    foreach ($item in Get-ChildItem -LiteralPath $Directory -Force -ErrorAction SilentlyContinue) {
+        if ($item.PSIsContainer) {
+            if ($item.Name -in @('.git', 'bin', 'obj', 'node_modules', 'dist')) { continue }
+
+            $relative = $item.FullName.Substring($repoRoot.Length + 1).Replace('\', '/')
+            if ($relative -in @('.codex/state', '.codex/tmp')) { continue }
+
+            Get-ScannableRepositoryFiles -Directory $item.FullName
+        }
+        elseif ($item.Extension -in @('.md', '.toml', '.ps1', '.cs')) {
+            $item
+        }
+    }
+}
+
 function Test-NoLegacyDocReferences {
     $excluded = @(
         '.git/',
@@ -154,14 +172,19 @@ function Test-NoLegacyDocReferences {
         '.codex/tmp/'
     )
 
-    Get-ChildItem -LiteralPath $repoRoot -Recurse -File -Force -Include '*.md', '*.toml', '*.ps1', '*.cs' -ErrorAction SilentlyContinue | ForEach-Object {
-        $relative = $_.FullName.Substring($repoRoot.Length + 1).Replace('\', '/')
+    foreach ($file in @(Get-ScannableRepositoryFiles -Directory $repoRoot)) {
+        $relative = $file.FullName.Substring($repoRoot.Length + 1).Replace('\', '/')
+        $skip = $false
         foreach ($prefix in $excluded) {
-            if ($relative.StartsWith($prefix)) { return }
+            if ($relative.StartsWith($prefix)) {
+                $skip = $true
+                break
+            }
         }
-        if ($relative -in @('scripts/agent/Test-DocsMemory.ps1', 'scripts/agent/Test-HarnessPolicy.ps1')) { return }
+        if ($skip) { continue }
+        if ($relative -in @('scripts/agent/Test-DocsMemory.ps1', 'scripts/agent/Test-HarnessPolicy.ps1')) { continue }
 
-        $text = Get-Content -LiteralPath $_.FullName -Raw -Encoding UTF8
+        $text = Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8
         if ($text -match 'docs[/\\]_memory|docs[/\\]CONSTITUTION\.md|docs[/\\]domain|docs[/\\]codex[/\\]rules|harness[/\\](graph|orchestrator|policies|telemetry|tools|evals)') {
             Add-Error "Legacy docs or harness reference found in $relative"
         }

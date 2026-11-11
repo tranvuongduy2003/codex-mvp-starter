@@ -2,6 +2,8 @@ using Solution.Domain.Exceptions;
 
 namespace Solution.Domain.Users;
 
+// Baseline migration debt: the shipped auth identity uses a GUID key.
+// New entity/aggregate IDs must use int or long; see docs/technical.md.
 public readonly record struct UserId(Guid Value)
 {
     public static UserId New() => From(Guid.NewGuid());

@@ -18,6 +18,22 @@ A framework for building ui, components and design systems. Components are added
 
 The JSON above contains the project config and installed components. Use `npx shadcn@latest docs <component>` to get documentation and example URLs for any component.
 
+## Solution Project Adapter
+
+- Project config: `web/components.json` (`base-nova`, `neutral`, CSS variables, Lucide,
+  aliases under `@/components`). Use Base UI `render` composition, not Radix `asChild`.
+- The complete official `base-nova` set is already installed in
+  `web/src/components/ui` (see its `README.md`). Check that directory before adding
+  anything; do not re-run a bulk add.
+- Feature code **must compose these primitives**. Raw interactive HTML
+  (`button`, `input`, `table`, `dialog`, etc.) is banned outside
+  `web/src/components/ui/**` by `web/AGENTS.md`, ESLint, and
+- Add or update a primitive from `web/` with `npx shadcn@latest add <name>`, then update
+  `web/src/components/ui/README.md` and the inventory in
+- Read `web/src/components/ui/AGENTS.md` before editing a primitive; keep its public API
+  and accessibility behavior intact.
+- Verify with `yarn --cwd web lint`, `yarn --cwd web build`, and
+
 ## Principles
 
 1. **Use existing components first.** Use `npx shadcn@latest search` to check registries before writing custom UI. Check community registries too.
@@ -248,7 +264,6 @@ npx shadcn@latest view @shadcn/button
 - [rules/base-vs-radix.md](./rules/base-vs-radix.md) — asChild vs render, Select, ToggleGroup, Slider, Accordion
 - [cli.md](./cli.md) — Commands, flags, presets, templates
 - [customization.md](./customization.md) — Theming, CSS variables, extending components
-
 
 
 

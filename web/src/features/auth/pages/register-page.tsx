@@ -1,25 +1,42 @@
 import { Link } from 'react-router-dom'
 
+import { PageTitle } from '@/app/components/page-title'
 import { paths } from '@/app/paths'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
-import { RegisterForm } from '../register-form'
+import { RegisterForm } from '../components'
 
 export function RegisterPage() {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Create account</h1>
-        <p className="text-muted-foreground text-sm">Create an account to get started.</p>
-      </div>
+    <Card className="w-full shadow-md">
+      <PageTitle title="Create account" />
 
-      <RegisterForm />
+      <CardHeader>
+        <CardTitle className="text-2xl">
+          <h1 className="text-2xl font-semibold tracking-tight">Create account</h1>
+        </CardTitle>
+        <CardDescription>Create an account to get started.</CardDescription>
+      </CardHeader>
 
-      <p className="text-muted-foreground text-center text-sm">
-        Already have an account?{' '}
-        <Link to={paths.login} className="link-primary">
-          Log in
-        </Link>
-      </p>
-    </div>
+      <CardContent className="flex flex-col gap-6">
+        <RegisterForm />
+      </CardContent>
+
+      <CardFooter className="justify-center">
+        <p className="text-muted-foreground text-center text-sm">
+          Already have an account?{' '}
+          <Link to={paths.login} className="link-primary">
+            Log in
+          </Link>
+        </p>
+      </CardFooter>
+    </Card>
   )
 }

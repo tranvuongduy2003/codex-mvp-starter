@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
-import { authApi } from '@/features/auth'
-import { ApiError } from '@/types/api-problem'
+import { authApi, authQueryKeys } from '@/features/auth'
 import { useAuthStore } from '@/store/auth-store'
+import { ApiError } from '@/types/api-problem'
 
 export function useSession() {
   const authStatus = useAuthStore((state) => state.status)
@@ -12,7 +12,7 @@ export function useSession() {
   const setStatus = useAuthStore((state) => state.setStatus)
 
   const query = useQuery({
-    queryKey: ['auth', 'session'],
+    queryKey: authQueryKeys.session(),
     queryFn: ({ signal }) => authApi.getCurrentUser(signal),
     retry: false,
     staleTime: 60_000,
